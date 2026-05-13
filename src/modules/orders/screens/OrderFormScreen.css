@@ -1,0 +1,135 @@
+.order-form {
+  padding: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.order-form__title {
+  margin: 0 0 16px;
+}
+
+.order-form__branch-info {
+  padding: 12px;
+  background: #e8f5e9;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 0.9375rem;
+}
+
+.order-form__no-branch {
+  padding: 12px;
+  background: #fff3e0;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  color: #e65100;
+  font-size: 0.9375rem;
+}
+
+.order-form__section {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.order-form__section h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  color: #2c3e50;
+}
+
+.order-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.875rem;
+  margin-bottom: 12px;
+}
+
+.order-form__field input {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9375rem;
+}
+
+.order-form__error {
+  color: #c0392b;
+  font-size: 0.75rem;
+}
+
+.order-form__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 4px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.order-form__item-title {
+  flex: 1;
+  font-size: 0.875rem;
+}
+
+.order-form__item-qty {
+  font-size: 0.8125rem;
+  color: #666;
+}
+
+.order-form__empty {
+  font-size: 0.875rem;
+  color: #888;
+  font-style: italic;
+}
+
+.order-form__items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.order-form__items-list li {
+  padding: 4px 0;
+  font-size: 0.875rem;
+}
+
+.order-form__delivery-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.order-form__radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.order-form__address {
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.order-form__submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.order-form__submit-btn:hover:not(:disabled) {
+  background: #34495e;
+}
+
+.order-form__submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

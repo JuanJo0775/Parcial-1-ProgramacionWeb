@@ -1,0 +1,35 @@
+.branch-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.branch-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.branch-card--selected {
+  border-color: #2c3e50;
+  background: #f0f4f8;
+}
+
+.branch-card__name {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.branch-card__city {
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0 0 4px;
+}
+
+.branch-card__address,
+.branch-card__phone,
+.branch-card__hours {
+  font-size: 0.75rem;
+  color: #888;
+  margin: 0;
+}

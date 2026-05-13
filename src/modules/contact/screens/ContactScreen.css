@@ -1,0 +1,114 @@
+.contact {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact__title {
+  margin: 0 0 4px;
+}
+
+.contact__subtitle {
+  font-size: 0.9375rem;
+  color: #666;
+  margin: 0 0 20px;
+}
+
+.contact__api-error {
+  padding: 12px;
+  background: #ffebee;
+  border-radius: 6px;
+  color: #c0392b;
+  font-size: 0.875rem;
+  margin-bottom: 16px;
+}
+
+.contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.875rem;
+}
+
+.contact__field input,
+.contact__field textarea {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.contact__field input:focus,
+.contact__field textarea:focus {
+  outline: none;
+  border-color: #2c3e50;
+}
+
+.contact__field-error {
+  color: #c0392b;
+  font-size: 0.75rem;
+}
+
+.contact__submit-btn {
+  padding: 10px 20px;
+  background: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.contact__submit-btn:hover:not(:disabled) {
+  background: #34495e;
+}
+
+.contact__submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.contact__success {
+  text-align: center;
+  padding: 32px 16px;
+  background: #e8f5e9;
+  border-radius: 12px;
+}
+
+.contact__success-title {
+  margin: 0 0 12px;
+  color: #27ae60;
+}
+
+.contact__ticket {
+  font-family: monospace;
+  font-size: 1.125rem;
+  margin: 0 0 8px;
+}
+
+.contact__success p {
+  margin: 0 0 16px;
+  color: #555;
+}
+
+.contact__reset-btn {
+  padding: 8px 20px;
+  background: #fff;
+  border: 1px solid #2c3e50;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+}
+
+.contact__reset-btn:hover {
+  background: #f0f0f0;
+}

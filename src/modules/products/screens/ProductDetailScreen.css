@@ -1,0 +1,135 @@
+.detail {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.detail__back-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #2c3e50;
+  padding: 0;
+  margin-bottom: 16px;
+}
+
+.detail__back-btn:hover {
+  text-decoration: underline;
+}
+
+.detail__loading,
+.detail__error {
+  text-align: center;
+  padding: 48px;
+  color: #666;
+}
+
+.detail__error {
+  color: #c0392b;
+}
+
+.detail__layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.detail__cover {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f0f0f0;
+}
+
+.detail__genre {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+}
+
+.detail__title {
+  margin: 4px 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.detail__author {
+  color: #555;
+  font-style: italic;
+  margin: 0 0 12px;
+}
+
+.detail__price {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0 0 8px;
+  color: #2c3e50;
+}
+
+.detail__stock {
+  font-size: 0.875rem;
+  color: #27ae60;
+  margin: 0 0 4px;
+}
+
+.detail__stock--out {
+  color: #c0392b;
+}
+
+.detail__isbn {
+  font-size: 0.75rem;
+  color: #999;
+  margin: 0 0 16px;
+}
+
+.detail__description {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #333;
+  margin: 0 0 20px;
+}
+
+.detail__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail__qty-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+}
+
+.detail__qty-input {
+  width: 60px;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.detail__add-btn {
+  padding: 8px 20px;
+  background: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.detail__add-btn:hover {
+  background: #34495e;
+}
+
+.detail__no-stock {
+  font-size: 0.9375rem;
+  color: #c0392b;
+  font-style: italic;
+}
