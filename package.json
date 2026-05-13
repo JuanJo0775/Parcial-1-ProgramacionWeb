@@ -1,13 +1,14 @@
 {
-  "name": "temp",
+  "name": "letras-del-eje",
+  "description": "Página web de librería con sucursales en el Eje Cafetero",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "^19.2.6",
