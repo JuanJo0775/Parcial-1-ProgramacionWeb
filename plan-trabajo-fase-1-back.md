@@ -91,7 +91,7 @@ interface Branch {
 | Letras del Eje — Pereira Circunvalar | Pereira | Risaralda |
 | Letras del Eje — Dosquebradas | Dosquebradas | Risaralda |
 | Letras del Eje — Armenia Centro | Armenia | Quindío |
-| Letras del Eje — Montenegro | Montenegro | Quindío |
+| Letras del Eje — Circasia | Circasia | Quindío |
 
 **Códigos HTTP simulados:**
 - `200 OK` — lista o sucursal más cercana encontrada
