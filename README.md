@@ -101,96 +101,140 @@ src/
 
 ---
 
-## 🎮 Comandos Importantes
+---
+
+## Comandos
 
 ```bash
-# Desarrollo
-npm run dev              # Inicia servidor en http://localhost:5173
+# Instalar dependencias (solo la primera vez)
+npm install
 
-# Build
-npm run build            # Compila para producción
+# Ejecutar en desarrollo
+npm run dev
+# → La app queda disponible en http://localhost:5173
 
-# Preview
-npm run preview          # Previsualiza la build de producción localmente
+# Compilar para producción
+npm run build
+# → Genera archivos optimizados en /dist
 
-# Linting
-npm lint                 # Verifica errores de código (ESLint)
+# Previsualizar la build de producción
+npm run preview
+
+# Verificar código con ESLint
+npm run lint
+# → 0 errores esperados (4 advertencias de useEffect deps son intencionales)
 ```
 
 ---
 
-## ⚙️ Configuración
+## Arquitectura
 
-### Variables de Entorno
-El archivo `.env` contiene:
+### Flujo de datos (regla del proyecto)
+
+```
+Componente / Screen
+    ↓
+use[ModuleName]()          ← hook (única puerta de entrada al store)
+    ↓
+useStore de Zustand        ← estado global
+    ↓
+service.ts                ← llama al adapter
+    ↓
+adapter (mock / real)     ← implementa IApiAdapter
+    ↓
+handler del mock          ← delay + errores simulados + lógica de dominio
+    ↓
+datos semilla             ← books.data.ts / branches.data.ts
+```
+
+> Un componente **nunca** llama a un servicio directamente. Siempre: hook → store → servicio → adapter.
+
+### Patrón Zustand — convenciones aplicadas
+
+| Regla | Cómo se implementa |
+|---|---|
+| `isLoading` → `true` al iniciar | `set({ isLoading: true, error: null })` al inicio de cada acción `fetch*` |
+| `isLoading` → `false` al terminar |不论成功或失败都设为 `false` |
+| `error: string \| null` | Solo el mensaje legible se guarda en estado |
+| `isStale` + `markAsStale()` | products y branches limpian datos al marcar stale; el hook detecta y refetch |
+| `AbortController` | Variable en el closure del módulo, no en el estado. Aborta request previo en cada `fetch*` |
+| `get()` dentro de acciones | `submitOrder` lee `get().draft`; `fetchBooks` lee `get().filters` |
+| Sin lógica de presentación | Los stores solo contienen datos y acciones, cero imports de React |
+
+### Estrategia de geolocalización
+
+```
+navigator.geolocation
+    ↓
+geolocation.util.ts
+  └─ requestGeolocation() → Promise<GeolocationResult>
+       ├─ granted: true  → { lat, lng }
+       └─ granted: false → reason: 'denied' | 'unavailable' | 'timeout'
+
+branches.store.ts
+  └─ fetchNearestBranch()
+       ├─ Llama a requestGeolocation()
+       ├─ granted: true  → llama a getNearestBranch(coords) → guarda nearestBranch + selectedBranch
+       └─ granted: false → set({ locationDenied: true })
+
+useNearestBranch.ts
+  └─ Hook que consume el store y delega la lógica al store
+     Retorna: { nearestBranch, locationDenied, isLoading, error }
+```
+
+---
+
+## Configuración
+
+## Variables de Entorno
+
+Crear un archivo `.env` en la raíz del proyecto con la siguiente variable:
+
 ```
 VITE_USE_MOCK=true
 ```
 
-**Esto significa:** La aplicación siempre usa la API simulada. No requiere backend real ni conexión a internet.
+| Variable | Valor | Descripción |
+|---|---|---|
+| `VITE_USE_MOCK` | `true` (por defecto) | Activa la Mock API simulada. La aplicación funciona **completamente sin backend** ni conexión a internet. Cambiar a `false` solo cuando se implemente un backend real. |
+
+Para crear el archivo:
+
+```bash
+# En la raíz del proyecto
+echo "VITE_USE_MOCK=true" > .env
+```
+
+> Sin este archivo, Vite usa valores por defecto vacíos y la mock API sigue funcionando con su configuración interna.
 
 ### TypeScript Strict Mode
-- `"strict": true` — Validación estricta de tipos
-- `"noUncheckedIndexedAccess": true` — Protección contra accesos a índices no verificados
+
+- `"strict": true`
+- `"noUncheckedIndexedAccess": true`
+
+Todos los errores de TypeScript deben resolverse antes de commitear.
 
 ---
 
-## 🗂️ Fases de Implementación
+---
 
-### ✅ Fase 0 (Completa)
-- Setup del proyecto
-- Estructura de carpetas
-- Dependencias instaladas
+## Estructura de módulos
 
-### 📋 Fase 1 (Back - Mock API)
-- [ ] Tipos compartidos
-- [ ] Adaptador de API
-- [ ] Datos semilla
-- [ ] Utilidades del mock
-- [ ] Handlers por dominio
-- [ ] Servicios de módulos
-
-### 📋 Fase 2 (Front - Componentes React)
-- [ ] Componentes visuales
-- [ ] Pantallas completas
-- [ ] Sistema de rutas
-- [ ] Estilos y responsividad
+| Módulo | types | services | store | hooks | components | screens | utils |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| `products` | ✅ | ✅ | ✅ | ✅ | ✅ `BookCard` | ✅ Catálogo + Detalle | ✗ |
+| `branches` | ✅ | ✅ | ✅ | ✅ | ✅ `BranchCard` | ✅ Selector | ✅ `geolocation.util` |
+| `orders` | ✅ | ✅ | ✅ | ✅ | ✗ | ✅ Formulario + Recibo | ✗ |
+| `contact` | ✅ | ✅ | ✗ (useState) | ✅ | ✗ | ✅ Contacto | ✗ |
 
 ---
 
-## 👥 Para el Equipo
-
-### Descargar dependencias (primera vez)
-```bash
-npm install
-```
-
-### Si hay cambios en `package.json`
-```bash
-npm install
-```
-
-### Verificar que todo está bien
-```bash
-npm run dev     # Debería iniciar sin errores
-```
-
----
-
-## 📝 Notas Importantes
+## Notas Importantes
 
 - **No modificar** `package-lock.json` manualmente. npm lo genera automáticamente.
 - **Antes de hacer commits:** ejecuta `npm lint` para revisar el código
 - **Mock API:** simula latencia (500-1200ms) y errores (10% de probabilidad) para ser realista
 - **TypeScript Strict:** el compilador es estricto intencionalmente. Resolver todos los errores es obligatorio.
-
----
-
-## 🔗 Documentación Adicional
-
-Ver documentos en la raíz del proyecto:
-- `plan-trabajo-fase-1-back.md` — Especificación técnica del mock API
-- `plan-trabajo-fase-1.5.md` — Arquitectura de módulos y Zustand
 
 ---
 

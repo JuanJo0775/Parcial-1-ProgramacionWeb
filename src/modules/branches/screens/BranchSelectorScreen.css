@@ -1,0 +1,113 @@
+.branch-selector {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.branch-selector__title {
+  margin: 0 0 4px;
+}
+
+.branch-selector__subtitle {
+  font-size: 0.9375rem;
+  color: #666;
+  margin: 0 0 20px;
+}
+
+.branch-selector__spinner {
+  text-align: center;
+  padding: 48px 16px;
+}
+
+.branch-selector__loading-bar {
+  height: 3px;
+  background: linear-gradient(90deg, #2c3e50 0%, #3498db 50%, #2c3e50 100%);
+  background-size: 200% 100%;
+  animation: loading-slide 1.5s ease-in-out infinite;
+  border-radius: 2px;
+  margin-top: 16px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@keyframes loading-slide {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.branch-selector__error {
+  padding: 12px;
+  background: #ffebee;
+  border-radius: 6px;
+  color: #c0392b;
+  margin-bottom: 16px;
+}
+
+.branch-selector__nearest-section {
+  margin-bottom: 24px;
+}
+
+.branch-selector__section-title {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  margin: 0 0 8px;
+}
+
+.branch-selector__nearest {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.branch-selector__confirm-btn {
+  padding: 10px 20px;
+  background: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.branch-selector__confirm-btn:hover {
+  background: #219a52;
+}
+
+.branch-selector__denied {
+  padding: 12px;
+  background: #fff3e0;
+  border-radius: 6px;
+  color: #e65100;
+  font-size: 0.875rem;
+  margin-bottom: 16px;
+}
+
+.branch-selector__all-section {
+  margin-bottom: 24px;
+}
+
+.branch-selector__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.branch-selector__skip-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  color: #888;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.branch-selector__skip-btn:hover {
+  background: #f5f5f5;
+}
