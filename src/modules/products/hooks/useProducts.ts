@@ -8,12 +8,12 @@ export const useProducts = () => {
     if (books.length === 0 || isStale) {
       fetchBooks();
     }
-  }, [isStale]);
+  }, [books.length, isStale, fetchBooks]);
 
   const applyFilters = useCallback((newFilters: Parameters<typeof setFilters>[0]) => {
     setFilters(newFilters);
     fetchBooks(newFilters);
   }, [setFilters, fetchBooks]);
 
-  return { books, filters, isLoading, error, setFilters: applyFilters };
+  return { books, filters, isLoading, error, setFilters: applyFilters, fetchBooks };
 };

@@ -1,97 +1,67 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { Routes, Route, Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 import { CatalogScreen } from './modules/products/screens/CatalogScreen';
 import { ProductDetailScreen } from './modules/products/screens/ProductDetailScreen';
 import { OrderFormScreen } from './modules/orders/screens/OrderFormScreen';
 import { OrderReceiptScreen } from './modules/orders/screens/OrderReceiptScreen';
 import { ContactScreen } from './modules/contact/screens/ContactScreen';
 import { BranchSelectorScreen } from './modules/branches/screens/BranchSelectorScreen';
+import { CartScreen } from './modules/cart/screens/CartScreen';
 import { useOrdersStore } from './modules/orders/store';
-import type { Book, Branch } from './shared/types';
+import { useBranchesStore } from './modules/branches/store';
+import { useProductsStore } from './modules/products/store';
+import type { Branch } from './shared/types';
 import './App.css';
 
-type Screen = 'catalog' | 'branches' | 'order' | 'receipt' | 'contact';
+function AppDataLoader({ children }: { children: React.ReactNode }) {
+  const fetchBooks = useProductsStore((s) => s.fetchBooks);
+  const fetchBranches = useBranchesStore((s) => s.fetchBranches);
+
+  useEffect(() => {
+    fetchBooks();
+    fetchBranches();
+  }, [fetchBooks, fetchBranches]);
+
+  return <>{children}</>;
+}
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('catalog');
-  const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
-  const [selectedBranch, setSelectedBranch] = useState<Branch | null>(null);
   const draft = useOrdersStore((s) => s.draft);
+  const branches = useBranchesStore((s) => s.branches);
   const itemCount = draft.items?.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
 
-  const handleBookClick = (book: Book) => {
-    setSelectedBookId(book.id);
-  };
-
-  const handleBackToCatalog = () => {
-    setSelectedBookId(null);
-  };
-
-  const handleGoToOrder = () => {
-    setSelectedBookId(null);
-    setScreen('branches');
-  };
-
-  const handleBranchSelected = (branch: Branch) => {
-    setSelectedBranch(branch);
-    setScreen('order');
-  };
-
-  const handleOrderPlaced = () => {
-    setScreen('receipt');
-  };
-
-  const handleCancelOrder = () => {
-    setScreen('catalog');
-    setSelectedBookId(null);
-    setSelectedBranch(null);
-  };
-
-  const handleNewOrder = () => {
-    setScreen('catalog');
-    setSelectedBookId(null);
-    setSelectedBranch(null);
+  const getBranchFromState = (): Branch | null => {
+    const branchId = draft.delivery?.branchId;
+    if (!branchId) return null;
+    return branches.find(b => b.id === branchId) ?? null;
   };
 
   return (
+    <AppDataLoader>
     <div className="app">
       <header className="app-header">
         <div className="app-header__inner">
-          <div className="app-brand">
+          <Link to="/" className="app-brand">
             <p className="app-brand__eyebrow">Libreria del Eje Cafetero</p>
             <h1 className="app-header__title">Letras del Eje</h1>
-          </div>
+          </Link>
           <nav className="app-nav" aria-label="Navegacion principal">
             <ul className="app-nav__list">
               <li>
-                <button
-                  className={`app-nav__btn ${screen === 'catalog' || screen === 'branches' ? 'app-nav__btn--active' : ''}`}
-                  onClick={() => { setScreen('catalog'); setSelectedBookId(null); }}
-                  type="button"
-                  aria-current={screen === 'catalog' || screen === 'branches' ? 'page' : undefined}
-                >
+                <NavLink to="/" className={({ isActive }) => isActive ? 'app-nav__btn app-nav__btn--active' : 'app-nav__btn'}>
                   Catalogo
-                </button>
+                </NavLink>
               </li>
               <li>
-                <button
-                  className={`app-nav__btn app-nav__btn--cart ${screen === 'order' ? 'app-nav__btn--active' : ''}`}
-                  onClick={() => setScreen('branches')}
-                  type="button"
-                  aria-current={screen === 'order' ? 'page' : undefined}
-                >
-                  Hacer pedido
+                <NavLink to="/carrito" className={({ isActive }) => isActive ? 'app-nav__btn app-nav__btn--active app-nav__btn--cart' : 'app-nav__btn app-nav__btn--cart'}>
+                  Carrito
                   {itemCount > 0 && <span className="app-nav__badge">{itemCount}</span>}
-                </button>
+                </NavLink>
               </li>
               <li>
-                <button
-                  className={`app-nav__btn ${screen === 'contact' ? 'app-nav__btn--active' : ''}`}
-                  onClick={() => setScreen('contact')}
-                  type="button"
-                  aria-current={screen === 'contact' ? 'page' : undefined}
-                >
+                <NavLink to="/contacto" className={({ isActive }) => isActive ? 'app-nav__btn app-nav__btn--active' : 'app-nav__btn'}>
                   Contacto
-                </button>
+                </NavLink>
               </li>
             </ul>
           </nav>
@@ -100,27 +70,15 @@ export default function App() {
 
       <main className="app-main">
         <div className="app-main__inner">
-        {screen === 'catalog' && (
-          selectedBookId ? (
-            <ProductDetailScreen id={selectedBookId} onBack={handleBackToCatalog} onGoToOrder={handleGoToOrder} />
-          ) : (
-            <CatalogScreen onBookClick={handleBookClick} />
-          )
-        )}
-        {screen === 'branches' && (
-          <BranchSelectorScreen
-            onSelect={handleBranchSelected}
-          />
-        )}
-        {screen === 'order' && (
-          <OrderFormScreen
-            selectedBranch={selectedBranch}
-            onOrderPlaced={handleOrderPlaced}
-            onCancel={handleCancelOrder}
-          />
-        )}
-        {screen === 'receipt' && <OrderReceiptScreen onNewOrder={handleNewOrder} />}
-        {screen === 'contact' && <ContactScreen />}
+          <Routes>
+            <Route path="/" element={<CatalogWrapper />} />
+            <Route path="/libro/:id" element={<ProductDetailWrapper />} />
+            <Route path="/carrito" element={<CartWrapper />} />
+            <Route path="/sucursales" element={<BranchesWrapper />} />
+            <Route path="/pedido" element={<OrderWrapper branch={getBranchFromState()} />} />
+            <Route path="/recibo" element={<ReceiptWrapper />} />
+            <Route path="/contacto" element={<ContactScreen />} />
+          </Routes>
         </div>
       </main>
 
@@ -131,5 +89,64 @@ export default function App() {
         </div>
       </footer>
     </div>
+    </AppDataLoader>
   );
+}
+
+function CatalogWrapper() {
+  const navigate = useNavigate();
+  return <CatalogScreen onBookClick={(book) => navigate(`/libro/${book.id}`)} />;
+}
+
+function ProductDetailWrapper() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  if (!id) return null;
+  return <ProductDetailScreen id={id} onBack={() => navigate('/')} onGoToCart={() => navigate('/carrito')} />;
+}
+
+function CartWrapper() {
+  const navigate = useNavigate();
+  return <CartScreen onContinueShopping={() => navigate('/')} onGoToCheckout={() => navigate('/sucursales')} />;
+}
+
+function BranchesWrapper() {
+  const navigate = useNavigate();
+  const setBranchInDraft = useOrdersStore((s) => s.setDraft);
+  
+  const handleSelect = (branch: Branch) => {
+    setBranchInDraft({
+      delivery: {
+        type: 'pickup',
+        branchId: branch.id,
+      },
+    });
+    navigate('/pedido');
+  };
+  
+  return <BranchSelectorScreen onSelect={handleSelect} />;
+}
+
+function OrderWrapper({ branch }: { branch: Branch | null }) {
+  const navigate = useNavigate();
+  
+  const handleOrderPlaced = () => {
+    navigate('/recibo');
+  };
+  
+  const handleCancel = () => {
+    navigate('/');
+  };
+  
+  return <OrderFormScreen selectedBranch={branch} onOrderPlaced={handleOrderPlaced} onCancel={handleCancel} />;
+}
+
+function ReceiptWrapper() {
+  const navigate = useNavigate();
+  
+  const handleNewOrder = () => {
+    navigate('/');
+  };
+  
+  return <OrderReceiptScreen onNewOrder={handleNewOrder} />;
 }

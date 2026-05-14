@@ -6,10 +6,10 @@ import './ProductDetailScreen.css';
 interface ProductDetailScreenProps {
   id: string;
   onBack?: () => void;
-  onGoToOrder?: () => void;
+  onGoToCart?: () => void;
 }
 
-export const ProductDetailScreen = ({ id, onBack, onGoToOrder }: ProductDetailScreenProps) => {
+export const ProductDetailScreen = ({ id, onBack, onGoToCart }: ProductDetailScreenProps) => {
   const { selectedBook: book, isLoadingDetail: isLoading, errorDetail: error } = useProductDetail(id);
   const { draft, setDraft } = useOrdersStore();
   const [quantity, setQuantity] = useState(1);
@@ -73,9 +73,9 @@ export const ProductDetailScreen = ({ id, onBack, onGoToOrder }: ProductDetailSc
               <button className="detail__add-btn" type="button" onClick={handleAddToOrder}>
                 {added ? '✓ Agregado' : 'Agregar al pedido'}
               </button>
-              {onGoToOrder && (
-                <button className="detail__order-btn" type="button" onClick={onGoToOrder}>
-                  Elegir sucursal
+              {onGoToCart && (
+                <button className="detail__order-btn" type="button" onClick={onGoToCart}>
+                  Ver mi pedido
                 </button>
               )}
             </div>
