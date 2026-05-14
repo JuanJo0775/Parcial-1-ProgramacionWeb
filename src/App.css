@@ -73,6 +73,7 @@ body {
 }
 
 .app-nav__btn {
+  display: inline-block;
   background: transparent;
   border: 1px solid transparent;
   color: var(--ink);
@@ -81,6 +82,7 @@ body {
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 600;
+  text-decoration: none;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
