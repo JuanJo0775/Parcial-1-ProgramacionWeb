@@ -23,22 +23,25 @@ export const OrderReceiptScreen = ({ onNewOrder }: OrderReceiptScreenProps) => {
       : `Domicilio a ${receipt.delivery.city}`;
 
   return (
-    <div className="receipt">
-      <div className="receipt__card">
-        <div className="receipt__header">
-          <h2 className="receipt__title">¡Pedido confirmado!</h2>
+    <section className="receipt" aria-labelledby="receipt-title">
+      <article className="receipt__card">
+        <header className="receipt__header">
+          <div>
+            <h2 id="receipt-title" className="receipt__title">Pedido confirmado</h2>
+            <p className="receipt__subtitle">Tu orden quedo registrada correctamente.</p>
+          </div>
           <p className="receipt__order-id">{receipt.orderId}</p>
-        </div>
+        </header>
 
-        <section className="receipt__section">
-          <h3>Datos del cliente</h3>
+        <section className="receipt__section" aria-labelledby="receipt-customer">
+          <h3 id="receipt-customer">Datos del cliente</h3>
           <p><strong>Nombre:</strong> {receipt.customer.fullName}</p>
           <p><strong>Email:</strong> {receipt.customer.email}</p>
-          <p><strong>Teléfono:</strong> {receipt.customer.phone}</p>
+          <p><strong>Telefono:</strong> {receipt.customer.phone}</p>
         </section>
 
-        <section className="receipt__section">
-          <h3>Libros pedidos</h3>
+        <section className="receipt__section" aria-labelledby="receipt-items">
+          <h3 id="receipt-items">Libros pedidos</h3>
           <ul className="receipt__items">
             {receipt.items.map((item) => (
               <li key={item.bookId} className="receipt__item">
@@ -52,15 +55,15 @@ export const OrderReceiptScreen = ({ onNewOrder }: OrderReceiptScreenProps) => {
           </ul>
         </section>
 
-        <section className="receipt__section">
-          <h3>Forma de entrega</h3>
+        <section className="receipt__section" aria-labelledby="receipt-delivery">
+          <h3 id="receipt-delivery">Forma de entrega</h3>
           <p>{deliveryLabel}</p>
           {receipt.delivery.type === 'home_delivery' && receipt.delivery.address && (
             <p>{receipt.delivery.address}, {receipt.delivery.city}</p>
           )}
         </section>
 
-        <section className="receipt__totals">
+        <section className="receipt__totals" aria-label="Totales del pedido">
           <div className="receipt__total-row">
             <span>Subtotal</span>
             <span>${receipt.totals.subtotal.toLocaleString('es-CO')} COP</span>
@@ -82,10 +85,10 @@ export const OrderReceiptScreen = ({ onNewOrder }: OrderReceiptScreenProps) => {
 
         <p className="receipt__instructions">{receipt.instructions}</p>
 
-        <button className="receipt__new-btn" onClick={handleNewOrder}>
+        <button className="receipt__new-btn" type="button" onClick={handleNewOrder}>
           Hacer un nuevo pedido
         </button>
-      </div>
-    </div>
+      </article>
+    </section>
   );
 };

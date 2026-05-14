@@ -19,44 +19,52 @@ export const BranchSelectorScreen = ({ onSelect, onSkip }: BranchSelectorScreenP
 
   if (loadingNearest || loadingBranches) {
     return (
-      <div className="branch-selector">
-        <div className="branch-selector__spinner">
-          <p>Buscando tu sucursal más cercana...</p>
+      <section className="branch-selector" aria-labelledby="branch-title">
+        <div className="branch-selector__spinner" role="status" aria-live="polite">
+          <p>Buscando tu sucursal mas cercana...</p>
           <div className="branch-selector__loading-bar" />
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="branch-selector">
-      <h2 className="branch-selector__title">Elige tu sucursal</h2>
-      <p className="branch-selector__subtitle">
-        Selecciona la sucursal más conveniente para retirar tu pedido o de donde se despachará el domicilio.
-      </p>
+    <section className="branch-selector" aria-labelledby="branch-title">
+      <header className="branch-selector__header">
+        <div>
+          <h2 id="branch-title" className="branch-selector__title">Elige tu sucursal</h2>
+          <p className="branch-selector__subtitle">
+            Selecciona la sucursal mas conveniente para retirar tu pedido o desde donde se despachara el domicilio.
+          </p>
+        </div>
+        <p className="branch-selector__count">{branches.length} sucursales disponibles</p>
+      </header>
 
       {error && (
-        <div className="branch-selector__error">Error: {error}</div>
+        <div className="branch-selector__error" role="alert">
+          No pudimos cargar las sucursales. Intenta de nuevo. {error}
+        </div>
       )}
 
       {nearestBranch && (
         <div className="branch-selector__nearest-section">
-          <h3 className="branch-selector__section-title">Sucursal más cercana</h3>
+          <h3 className="branch-selector__section-title">Sucursal sugerida</h3>
           <div className="branch-selector__nearest">
             <BranchCard branch={nearestBranch} selected />
             <button
               className="branch-selector__confirm-btn"
+              type="button"
               onClick={() => handleSelect(nearestBranch)}
             >
-              Elegir esta sucursal
+              Usar esta sucursal
             </button>
           </div>
         </div>
       )}
 
       {locationDenied && (
-        <div className="branch-selector__denied">
-          No pudimos acceder a tu ubicación. Selecciona una sucursal de la lista.
+        <div className="branch-selector__denied" role="status">
+          No pudimos acceder a tu ubicacion. Selecciona una sucursal de la lista.
         </div>
       )}
 
@@ -75,10 +83,10 @@ export const BranchSelectorScreen = ({ onSelect, onSkip }: BranchSelectorScreenP
       </div>
 
       {onSkip && (
-        <button className="branch-selector__skip-btn" onClick={onSkip}>
+        <button className="branch-selector__skip-btn" type="button" onClick={onSkip}>
           Omitir y continuar sin sucursal
         </button>
       )}
-    </div>
+    </section>
   );
 };

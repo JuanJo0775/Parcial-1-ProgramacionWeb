@@ -8,7 +8,7 @@ export interface OrdersState {
   error: string | null;
   setDraft: (partial: Partial<CreateOrderPayload>) => void;
   setSelectedBranchId: (branchId: string) => void;
-  submitOrder: () => Promise<void>;
+  submitOrder: () => Promise<boolean>;
   clearReceipt: () => void;
   reset: () => void;
 }

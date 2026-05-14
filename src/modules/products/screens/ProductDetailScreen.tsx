@@ -15,8 +15,8 @@ export const ProductDetailScreen = ({ id, onBack, onGoToOrder }: ProductDetailSc
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
-  if (isLoading) return <p className="detail__loading">Cargando...</p>;
-  if (error) return <p className="detail__error">Error: {error}</p>;
+  if (isLoading) return <p className="detail__loading" role="status">Cargando detalle...</p>;
+  if (error) return <p className="detail__error" role="alert">No pudimos cargar el detalle. {error}</p>;
   if (!book) return null;
 
   const handleAddToOrder = () => {
@@ -33,23 +33,22 @@ export const ProductDetailScreen = ({ id, onBack, onGoToOrder }: ProductDetailSc
     setAdded(true);
     setTimeout(() => {
       setAdded(false);
-      onGoToOrder?.();
     }, 800);
   };
 
   return (
-    <div className="detail">
+    <section className="detail" aria-labelledby="detail-title">
       {onBack && (
-        <button className="detail__back-btn" onClick={onBack}>
-          ← Volver al catálogo
+        <button className="detail__back-btn" type="button" onClick={onBack}>
+          ← Volver al catalogo
         </button>
       )}
 
-      <div className="detail__layout">
+      <article className="detail__layout">
         <img src={book.coverUrl} alt={book.title} className="detail__cover" />
         <div className="detail__info">
           <span className="detail__genre">{book.genre}</span>
-          <h2 className="detail__title">{book.title}</h2>
+          <h2 id="detail-title" className="detail__title">{book.title}</h2>
           <p className="detail__author">de {book.author}</p>
           <p className="detail__price">${book.price.toLocaleString('es-CO')} COP</p>
           <p className={`detail__stock ${book.stock === 0 ? 'detail__stock--out' : ''}`}>
@@ -61,7 +60,7 @@ export const ProductDetailScreen = ({ id, onBack, onGoToOrder }: ProductDetailSc
           {book.stock > 0 ? (
             <div className="detail__actions">
               <label className="detail__qty-label">
-                Cantidad:
+                Cantidad
                 <input
                   type="number"
                   min={1}
@@ -71,15 +70,20 @@ export const ProductDetailScreen = ({ id, onBack, onGoToOrder }: ProductDetailSc
                   className="detail__qty-input"
                 />
               </label>
-              <button className="detail__add-btn" onClick={handleAddToOrder}>
+              <button className="detail__add-btn" type="button" onClick={handleAddToOrder}>
                 {added ? '✓ Agregado' : 'Agregar al pedido'}
               </button>
+              {onGoToOrder && (
+                <button className="detail__order-btn" type="button" onClick={onGoToOrder}>
+                  Elegir sucursal
+                </button>
+              )}
             </div>
           ) : (
-            <p className="detail__no-stock">Este libro está agotado.</p>
+            <p className="detail__no-stock">Este libro esta agotado.</p>
           )}
         </div>
-      </div>
-    </div>
+      </article>
+    </section>
   );
 };

@@ -43,29 +43,38 @@ export const ContactScreen = () => {
 
   if (confirmation) {
     return (
-      <div className="contact">
+      <section className="contact" aria-labelledby="contact-success-title">
         <div className="contact__success">
-          <h2 className="contact__success-title">Mensaje enviado</h2>
+          <h2 id="contact-success-title" className="contact__success-title">Mensaje enviado</h2>
           <p className="contact__ticket">
             <strong>Ticket:</strong> {confirmation.ticketId}
           </p>
           <p>{confirmation.message}</p>
-          <button className="contact__reset-btn" onClick={handleReset}>
-            Enviar otro mensaje
+          <button className="contact__reset-btn" type="button" onClick={handleReset}>
+            Registrar otro mensaje
           </button>
         </div>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="contact">
-      <h2 className="contact__title">Contacto</h2>
-      <p className="contact__subtitle">
-        ¿Tienes preguntas o sugerencias? Escríbenos y te responderemos en menos de 24 horas.
-      </p>
+    <section className="contact" aria-labelledby="contact-title">
+      <header className="contact__header">
+        <div>
+          <h2 id="contact-title" className="contact__title">Contacto</h2>
+          <p className="contact__subtitle">
+            ¿Tienes preguntas o sugerencias? Escribenos y te responderemos en menos de 24 horas.
+          </p>
+        </div>
+        <p className="contact__meta">Atencion al cliente · Lun–Sab 9:00–19:00</p>
+      </header>
 
-      {error && <div className="contact__api-error">{error}</div>}
+      {error && (
+        <div className="contact__api-error" role="alert">
+          No pudimos enviar el mensaje. Intenta de nuevo. {error}
+        </div>
+      )}
 
       <form className="contact__form" onSubmit={handleSubmit} noValidate>
         <label className="contact__field">
@@ -75,6 +84,7 @@ export const ContactScreen = () => {
             value={form.fullName}
             onChange={(e) => handleChange('fullName', e.target.value)}
             placeholder="Ej. Juan Pérez"
+            autoComplete="name"
           />
           {fieldErrors.fullName && <span className="contact__field-error">{fieldErrors.fullName}</span>}
         </label>
@@ -86,6 +96,7 @@ export const ContactScreen = () => {
             value={form.email}
             onChange={(e) => handleChange('email', e.target.value)}
             placeholder="Ej. juan@example.com"
+            autoComplete="email"
           />
           {fieldErrors.email && <span className="contact__field-error">{fieldErrors.email}</span>}
         </label>
@@ -113,9 +124,9 @@ export const ContactScreen = () => {
         </label>
 
         <button type="submit" className="contact__submit-btn" disabled={isLoading}>
-          {isLoading ? 'Enviando...' : 'Enviar mensaje'}
+          {isLoading ? 'Registrando mensaje...' : 'Registrar mensaje'}
         </button>
       </form>
-    </div>
+    </section>
   );
 };
