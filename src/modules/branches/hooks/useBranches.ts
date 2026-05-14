@@ -8,7 +8,7 @@ export const useBranches = () => {
     if (branches.length === 0 || isStale) {
       fetchBranches();
     }
-  }, [isStale]);
+  }, [branches.length, isStale, fetchBranches]);
 
   return { branches, isLoading, error, fetchBranches };
 };

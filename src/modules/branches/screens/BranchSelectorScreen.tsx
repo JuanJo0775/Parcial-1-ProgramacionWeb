@@ -10,12 +10,14 @@ interface BranchSelectorScreenProps {
 }
 
 export const BranchSelectorScreen = ({ onSelect, onSkip }: BranchSelectorScreenProps) => {
-  const { branches, isLoading: loadingBranches } = useBranches();
-  const { nearestBranch, locationDenied, isLoading: loadingNearest, error } = useNearestBranch();
+  const { branches, isLoading: loadingBranches, error: branchesError, fetchBranches } = useBranches();
+  const { nearestBranch, locationDenied, isLoading: loadingNearest, error: nearestError } = useNearestBranch();
 
   const handleSelect = (branch: Branch) => {
     onSelect(branch);
   };
+
+  const error = branchesError || nearestError;
 
   if (loadingNearest || loadingBranches) {
     return (
@@ -23,6 +25,20 @@ export const BranchSelectorScreen = ({ onSelect, onSkip }: BranchSelectorScreenP
         <div className="branch-selector__spinner" role="status" aria-live="polite">
           <p>Buscando tu sucursal mas cercana...</p>
           <div className="branch-selector__loading-bar" />
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="branch-selector" aria-labelledby="branch-title">
+        <div className="branch-selector__error-state">
+          <h3 className="branch-selector__error-title">No hay sucursales disponibles</h3>
+          <p className="branch-selector__error-text">Hubo un problema al cargar las sucursales. Por favor intenta de nuevo.</p>
+          <button className="branch-selector__error-btn" type="button" onClick={() => fetchBranches()}>
+            Reintentar
+          </button>
         </div>
       </section>
     );
