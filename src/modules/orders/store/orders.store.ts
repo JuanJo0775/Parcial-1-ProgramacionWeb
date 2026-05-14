@@ -33,8 +33,10 @@ export const useOrdersStore = create<OrdersState>((set, get) => ({
     const response = await createOrder(get().draft as CreateOrderPayload);
     if (response.success) {
       set({ receipt: response.data, isLoading: false });
+      return true;
     } else {
       set({ error: response.error.message, isLoading: false });
+      return false;
     }
   },
 
