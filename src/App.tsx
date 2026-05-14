@@ -40,6 +40,12 @@ export default function App() {
     setScreen('receipt');
   };
 
+  const handleCancelOrder = () => {
+    setScreen('catalog');
+    setSelectedBookId(null);
+    setSelectedBranch(null);
+  };
+
   const handleNewOrder = () => {
     setScreen('catalog');
     setSelectedBookId(null);
@@ -50,32 +56,50 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div className="app-header__inner">
-          <h1 className="app-header__title">Letras del Eje</h1>
-          <nav className="app-nav">
-            <button
-              className={`app-nav__btn ${screen === 'catalog' || screen === 'branches' ? 'app-nav__btn--active' : ''}`}
-              onClick={() => { setScreen('catalog'); setSelectedBookId(null); }}
-            >
-              Catálogo
-            </button>
-            <button
-              className={`app-nav__btn app-nav__btn--cart ${screen === 'order' ? 'app-nav__btn--active' : ''}`}
-              onClick={() => setScreen('branches')}
-            >
-              Hacer Pedido
-              {itemCount > 0 && <span className="app-nav__badge">{itemCount}</span>}
-            </button>
-            <button
-              className={`app-nav__btn ${screen === 'contact' ? 'app-nav__btn--active' : ''}`}
-              onClick={() => setScreen('contact')}
-            >
-              Contacto
-            </button>
+          <div className="app-brand">
+            <p className="app-brand__eyebrow">Libreria del Eje Cafetero</p>
+            <h1 className="app-header__title">Letras del Eje</h1>
+          </div>
+          <nav className="app-nav" aria-label="Navegacion principal">
+            <ul className="app-nav__list">
+              <li>
+                <button
+                  className={`app-nav__btn ${screen === 'catalog' || screen === 'branches' ? 'app-nav__btn--active' : ''}`}
+                  onClick={() => { setScreen('catalog'); setSelectedBookId(null); }}
+                  type="button"
+                  aria-current={screen === 'catalog' || screen === 'branches' ? 'page' : undefined}
+                >
+                  Catalogo
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`app-nav__btn app-nav__btn--cart ${screen === 'order' ? 'app-nav__btn--active' : ''}`}
+                  onClick={() => setScreen('branches')}
+                  type="button"
+                  aria-current={screen === 'order' ? 'page' : undefined}
+                >
+                  Hacer pedido
+                  {itemCount > 0 && <span className="app-nav__badge">{itemCount}</span>}
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`app-nav__btn ${screen === 'contact' ? 'app-nav__btn--active' : ''}`}
+                  onClick={() => setScreen('contact')}
+                  type="button"
+                  aria-current={screen === 'contact' ? 'page' : undefined}
+                >
+                  Contacto
+                </button>
+              </li>
+            </ul>
           </nav>
         </div>
       </header>
 
       <main className="app-main">
+        <div className="app-main__inner">
         {screen === 'catalog' && (
           selectedBookId ? (
             <ProductDetailScreen id={selectedBookId} onBack={handleBackToCatalog} onGoToOrder={handleGoToOrder} />
@@ -92,11 +116,20 @@ export default function App() {
           <OrderFormScreen
             selectedBranch={selectedBranch}
             onOrderPlaced={handleOrderPlaced}
+            onCancel={handleCancelOrder}
           />
         )}
         {screen === 'receipt' && <OrderReceiptScreen onNewOrder={handleNewOrder} />}
         {screen === 'contact' && <ContactScreen />}
+        </div>
       </main>
+
+      <footer className="app-footer">
+        <div className="app-footer__inner">
+          <p className="app-footer__text">Eje Cafetero, Colombia · Entregas locales y retiro en sucursal.</p>
+          <p className="app-footer__text">Horario: Lun–Sab 9:00–19:00 · Tel: (606) 000-0000</p>
+        </div>
+      </footer>
     </div>
   );
 }
