@@ -11,5 +11,6 @@ export const useCreateOrder = () => {
     setSelectedBranchId: store.setSelectedBranchId,
     submitOrder: store.submitOrder,
     clearReceipt: store.clearReceipt,
+    reset: store.reset,
   };
 };
