@@ -10,13 +10,23 @@ interface ProductDetailScreenProps {
 }
 
 export const ProductDetailScreen = ({ id, onBack, onGoToCart }: ProductDetailScreenProps) => {
-  const { selectedBook: book, isLoadingDetail: isLoading, errorDetail: error } = useProductDetail(id);
+  const { selectedBook: book, isLoadingDetail: isLoading, errorDetail: error, retry } = useProductDetail(id);
   const { draft, setDraft } = useOrdersStore();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
   if (isLoading) return <p className="detail__loading" role="status">Cargando detalle...</p>;
-  if (error) return <p className="detail__error" role="alert">No pudimos cargar el detalle. {error}</p>;
+  if (error) {
+    return (
+      <div className="detail__error-state">
+        <h3 className="detail__error-title">No se pudo cargar el detalle del libro</h3>
+        <p className="detail__error-text">Hubo un problema al cargar la información. Por favor intenta de nuevo.</p>
+        <button className="detail__error-btn" type="button" onClick={retry}>
+          Reintentar
+        </button>
+      </div>
+    );
+  }
   if (!book) return null;
 
   const handleAddToOrder = () => {

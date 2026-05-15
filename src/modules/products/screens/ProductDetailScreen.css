@@ -27,6 +27,43 @@
   color: var(--muted);
 }
 
+.detail__error-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  margin: 20px 0;
+}
+
+.detail__error-title {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
+  color: var(--ink);
+}
+
+.detail__error-text {
+  margin: 0 0 24px;
+  color: var(--muted);
+}
+
+.detail__error-btn {
+  padding: 12px 28px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.detail__error-btn:hover {
+  filter: brightness(0.95);
+}
+
 .detail__error {
   color: #b63b2e;
 }

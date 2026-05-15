@@ -4,7 +4,7 @@ import { BookCard } from '../components/BookCard';
 import type { Book, ProductFilters } from '../../../shared/types';
 import './CatalogScreen.css';
 
-const GENRES = ['Novela', 'Misterio', 'Clásico', 'Romance', 'Cuento', 'Ficción', 'Ciencia ficción', 'Fantasía', 'Terror', 'Divulgación', 'Autoayuda'];
+const GENRES = ['Novela', 'Misterio', 'Clásico', 'Romance', 'Fantasía', 'Poesía', 'Ciencia ficción', 'Autoayuda', 'Terror'];
 
 interface CustomSelectProps {
   value: string;
@@ -116,7 +116,11 @@ export const CatalogScreen = ({ onBookClick, defaultFilters = {} }: CatalogScree
               min={0}
               placeholder="Ej. 40000"
               value={localFilters.priceMax ?? ''}
-              onChange={(e) => handleFilterChange({ priceMax: e.target.value ? Number(e.target.value) : undefined })}
+              onChange={(e) => {
+                const value = e.target.value;
+                const num = value ? parseFloat(value) : undefined;
+                handleFilterChange({ priceMax: (num !== undefined && !isNaN(num) && num >= 0) ? num : undefined });
+              }}
             />
           </label>
 

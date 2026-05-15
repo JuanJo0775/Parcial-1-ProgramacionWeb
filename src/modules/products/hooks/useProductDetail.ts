@@ -6,7 +6,9 @@ export const useProductDetail = (id: string) => {
 
   useEffect(() => {
     fetchBookById(id);
-  }, [id]);
+  }, [id, fetchBookById]);
 
-  return { selectedBook, isLoadingDetail, errorDetail };
+  const retry = () => fetchBookById(id);
+
+  return { selectedBook, isLoadingDetail, errorDetail, retry };
 };
