@@ -20,7 +20,7 @@ export const getProductsHandler = (filters?: ProductFilters): Promise<ApiRespons
     if (filters?.genre) {
       result = result.filter((b) => b.genre.toLowerCase() === filters.genre!.toLowerCase());
     }
-    if (filters?.priceMax !== undefined) {
+    if (filters?.priceMax !== undefined && !isNaN(filters.priceMax)) {
       result = result.filter((b) => b.price <= filters.priceMax!);
     }
     if (filters?.available) {
