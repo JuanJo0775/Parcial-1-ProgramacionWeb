@@ -4,6 +4,9 @@
 
 Parcial 1 — Programación con Tecnologías Web · V Semestre
 
+Juan Jose Naranjo - (JuanJo0775)
+Laura Gabriela Velez - (lauvel19)
+
 ---
 
 ## Descripción del Proyecto
